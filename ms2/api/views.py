@@ -16,7 +16,7 @@ def persons(request):
         result = rpc.persons.get()
     return Response({"message": "Invoked", "data": result})
 
-def persons():
+def birds():
     queryset = Bird.objects.all()
     birds = BirdSerializer(queryset, many=True)
     return birds.data
