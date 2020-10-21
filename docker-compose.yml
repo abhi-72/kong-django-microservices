@@ -1,0 +1,65 @@
+version: "2.1"
+
+services:
+
+  rabbit:
+    container_name: messagequeue
+    image: rabbitmq:3.8-management
+    ports:
+        - "15673:15672" # Exposing RabbitMQ web management on different port for convenience
+    restart: always
+
+  postgres:
+    container_name: pm-postgres
+    image: postgres
+    ports:
+        - "5433:5432" # Exposing Postgres on different port for convenience
+    environment:
+        POSTGRES_DB: "postgres"
+        POSTGRES_PASSWORD: "postgres"
+        POSTGRES_USER: "postgres"
+    restart: always
+
+  ms1:
+    container_name: microservice1
+    build: ./ms1
+    image: microservice1:latest
+    depends_on:
+      - rabbit
+    ports:
+        - "8002:8000"
+    links:
+        - "rabbit:messagequeue"
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"
+        RABBIT_MANAGEMENT_PORT: "15672"
+        DB_PASSWORD: "postgres"
+        DB_USER: "postgres"
+        DB_HOST: "postgres"
+        DB_PORT: "5433"
+        DB_NAME: "postgres"
+
+  ms2:
+    container_name: microservice2
+    build: ./ms2
+    image: microservice2:latest
+    depends_on:
+      - rabbit
+    ports:
+        - "8003:8000"
+    links:
+        - "rabbit:messagequeue"
+    environment:
+        RABBIT_PASSWORD: "guest"
+        RABBIT_USER: "guest"
+        RABBIT_HOST: "rabbit"
+        RABBIT_PORT: "5672"
+        RABBIT_MANAGEMENT_PORT: "15672"
+        DB_PASSWORD: "postgres"
+        DB_USER: "postgres"
+        DB_HOST: "postgres"
+        DB_PORT: "5433"
+        DB_NAME: "postgres"
