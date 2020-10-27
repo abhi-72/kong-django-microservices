@@ -11,7 +11,7 @@ services:
 
   postgres:
     container_name: postgresql
-    image: postgres
+    image: postgres:latest
     ports:
         - "5433:5432" # Exposing Postgres on different port for convenience
     environment:
@@ -31,16 +31,16 @@ services:
     links:
         - "rabbit:messagequeue"
     environment:
-        RABBIT_PASSWORD: "guest"
-        RABBIT_USER: "guest"
-        RABBIT_HOST: "rabbit"
-        RABBIT_PORT: "5672"
-        RABBIT_MANAGEMENT_PORT: "15672"
-        DB_PASSWORD: "postgres"
-        DB_USER: "postgres"
-        DB_HOST: "postgres"
-        DB_PORT: "5433"
-        DB_NAME: "postgres"
+        RABBIT_PASSWORD: guest
+        RABBIT_USER: guest
+        RABBIT_HOST: rabbit
+        RABBIT_PORT: 5672
+        RABBIT_MANAGEMENT_PORT: 15672
+        DB_PASSWORD: postgres
+        DB_USER: postgres
+        DB_HOST: postgresql
+        DB_PORT: 5433
+        DB_NAME: postgres
 
   ms2:
     container_name: microservice2
@@ -53,13 +53,13 @@ services:
     links:
         - "rabbit:messagequeue"
     environment:
-        RABBIT_PASSWORD: "guest"
-        RABBIT_USER: "guest"
-        RABBIT_HOST: "rabbit"
-        RABBIT_PORT: "5672"
-        RABBIT_MANAGEMENT_PORT: "15672"
-        DB_PASSWORD: "postgres"
-        DB_USER: "postgres"
-        DB_HOST: "postgres"
-        DB_PORT: "5433"
-        DB_NAME: "postgres"
+        RABBIT_PASSWORD: guest
+        RABBIT_USER: guest
+        RABBIT_HOST: rabbit
+        RABBIT_PORT: 5672
+        RABBIT_MANAGEMENT_PORT: 15672
+        DB_PASSWORD: postgres
+        DB_USER: postgres
+        DB_HOST: postgresql
+        DB_PORT: 5433
+        DB_NAME: postgres
